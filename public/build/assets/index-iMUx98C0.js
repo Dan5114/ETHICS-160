@@ -1,0 +1,1 @@
+import{r as a}from"./app-DOdZN8gx.js";import{u as f}from"./useDialog-wIvNQCz3.js";function s(e,t=[]){const r=a.useRef(e);return f(()=>{r.current=e}),a.useCallback((...c)=>{var u;return(u=r.current)==null?void 0:u.call(r,...c)},t)}export{s as u};
