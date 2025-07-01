@@ -77,8 +77,8 @@ export default function Register() {
                         onChange={(e) => setData('role', e.target.value)}
                     >
                         <SelectItem key={"researcher"} value="researcher">Researcher</SelectItem>
-                        <SelectItem key={"staff"} value="staff">RERC Staff</SelectItem>
-                        <SelectItem key={"chairperson"} value="chairperson">RERC Chairperson</SelectItem>
+                        {/* <SelectItem key={"staff"} value="staff">RERC Staff</SelectItem>
+                        <SelectItem key={"chairperson"} value="chairperson">RERC Chairperson</SelectItem> */}
                     </Select>
 
                     <InputError message={errors.role} className="mt-2" />

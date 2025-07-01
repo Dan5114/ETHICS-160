@@ -67,59 +67,87 @@ class AppProfileController extends Controller
         // create a cache key using hash
         $cacheKey = md5(json_encode($data));
 
-        $appQuery = AppProfile::query()
-            ->select(['id', 'user_id', 'firstname', 'lastname', 'research_title', 'date_applied', 'protocol_code', 'protocol_date_updated', 'is_hardcopy', 'review_type'])
+        
+
+        $appQuery = AppProfile::query();
+
+        $role = strtolower(trim($user->role));
+
+        if ($role === 'researcher') {
+            $appQuery->where('user_id', $user->id)
+                    ->whereIn('app_status', ['D', 'C']);
+        } elseif (in_array($role, ['staff', 'chairperson'])) {
+            $appQuery->where('app_status', 'C');
+        }
+
+        $appQuery->select([
+                'id', 'user_id', 'firstname', 'lastname',
+                'research_title', 'date_applied', 'protocol_code',
+                'protocol_date_updated', 'is_hardcopy', 'review_type', 'app_status'
+            ])
             ->withCount('members')
             ->with(['statuses' => function (HasMany $query) {
                 $query->select('id', 'app_profile_id', 'name', 'sequence', 'status')
                     ->orderBy('sequence', 'desc')
                     ->take(1);
-            }])->when($data['selectedStep'] ?? null, function (Builder $query, $step) {
+            }])
+            ->when($data['selectedStep'] ?? null, function (Builder $query, $step) {
                 return $query->whereHas('statuses', function (Builder $q) use ($step) {
-                    return $q->where('sequence', $step)
-                        ->where('end', null);
+                    return $q->where('sequence', $step)->whereNull('end');
                 });
-            })->when($data['query'] ?? null, function (Builder $query, $search) {
-                return $query->whereRaw('LOWER(research_title) LIKE ?', [strtolower("%$search%")])
-                    ->orWhereRaw('LOWER(firstname) LIKE ?', [strtolower("%$search%")])
-                    ->orWhereRaw('LOWER(lastname) LIKE ?', [strtolower("%$search%")]);
-            })->when($data['reviewType'] ?? null, function (Builder $query, $reviewType) {
+            })
+            ->when($data['query'] ?? null, function (Builder $query, $search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->whereRaw('LOWER(research_title) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(firstname) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(lastname) LIKE ?', ['%' . strtolower($search) . '%']);
+                });
+            })
+            ->when($data['reviewType'] ?? null, function (Builder $query, $reviewType) {
                 return $query->where('review_type', $reviewType);
-            })->when($data['step'] ?? null, function (Builder $query, $step) {
-                return $query->has('statuses', '<=', intval($step));
-            })->when($data['dateRange'] ?? null, function (Builder $query) use ($data) {
+            })
+            ->when($data['step'] ?? null, function (Builder $query, $step) {
+                return $query->has('statuses', '<=', (int) $step);
+            })
+            ->when($data['dateRange'] ?? null, function (Builder $query) use ($data) {
                 $start = Carbon::parse($data['dateRange']['start'])->startOfDay();
                 $end = Carbon::parse($data['dateRange']['end'])->endOfDay();
-
                 return $query->whereBetween('date_applied', [$start, $end]);
-            })->when($data['status'] ?? null, function ($query, $status) {
+            })
+            ->when($data['status'] ?? null, function (Builder $query, $status) {
                 return $query->whereHas('statuses', function (Builder $q) use ($status) {
                     $commonStatus = ['Approved', 'Assigned', 'Done', 'Signed', 'Completed', 'In Progress'];
 
                     if (!in_array($status, $commonStatus)) {
                         $q->whereNotIn('status', $commonStatus);
-                    }
-                    else {
+                    } else {
                         $q->where('status', $status);
                     }
 
                     return $q->orderBy('sequence', 'desc')->limit(1);
                 });
-            })->when($user->role === 'researcher', function (Builder $query) use ($user) {
-                return $query->where('user_id', $user->id);
-            })->orderByDesc('updated_at');
+            })
+            ->orderByDesc('updated_at');
 
-        $applications = Cache::flexible($cacheKey, [50, 90], function () use ($appQuery, $user, $page) {
-            // if the user's role is researcher set te page number to total number of applications
-            if ($user->role === 'researcher') {
-                $pageNumber = AppProfile::where('user_id', $user->id)->count();
 
-                return $appQuery->paginate($pageNumber, page: 1);
-            }
-            else {
-                return $appQuery->paginate(10, page: $page);
-            }
-        });
+        if ($user->role === 'researcher') {
+            $pageNumber = AppProfile::where('user_id', $user->id)->count();
+            $applications = $appQuery->paginate($pageNumber, page: 1);
+        } else {
+            $applications = $appQuery->paginate(10, page: $page);
+        }
+
+        // $applications = Cache::flexible($cacheKey, [50, 90], function () use ($appQuery, $user, $page) {
+        //     // if the user's role is researcher set te page number to total number of applications
+        //     if ($user->role === 'researcher') {
+        //         $pageNumber = AppProfile::where('user_id', $user->id)->count();
+
+        //         return $appQuery->paginate($pageNumber, page: 1);
+        //     }
+        //     else {
+        //         return $appQuery->paginate(10, page: $page);
+        //     }
+        // });
 
         $canCreate = $user->can('create', AppProfile::class);
         $canDelete = $applications->contains(function ($application) {
@@ -216,11 +244,18 @@ class AppProfileController extends Controller
             }
 
             $appProfile->statuses()->create([
-                'name' => 'Application Submission',
+                'name' => 'N/A',
                 'sequence' => 1,
-                'status' => 'In Progress',
-                'start' => now(),
+                'status' => 'Pending',
             ]);
+
+            //  $appProfile->statuses()->create([
+            //     'name' => 'Application Submission',
+            //     'sequence' => 1,
+            //     'status' => 'In Progress',
+            //     'start' => now(),
+            // ]);
+
             $appProfile->members()->saveMany($members);
             $appProfile->documents()->saveMany($documents);
 

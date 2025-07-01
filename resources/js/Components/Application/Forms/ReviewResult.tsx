@@ -25,7 +25,7 @@ const ReviewResult = ({user, application, status, handleUpdateApplication, handl
     }, [application.review_results, application.documents]);
 
     const canApprove = useMemo(() => {
-        return user.role === 'chairperson'
+        return user.role === 'chairperson' || user.role === 'staff'
                && !hasApproved
                && hasRevisions;
     }, [hasRevisions, hasApproved, user.role]);
@@ -166,7 +166,7 @@ const ReviewResult = ({user, application, status, handleUpdateApplication, handl
                             <>
                                 <Divider />
                                 <CardFooter className="flex-col items-end gap-3">
-                                    {(!hasApproved && user.role !== 'chairperson' && !loading) && <Alert color="warning" description={"Waiting for the chairperson to approve the revisions."} /> }
+                                    {(!hasApproved && user.role !== 'researcher' && !loading) && <Alert color="warning" description={"Waiting for the chairperson/staff to approve the revisions."} /> }
                                     {(hasApproved && !loading) && <Alert color="success" title="Revisions of Manuscripts has been approved" />}
                                     {canApprove && (
                                         <Button color="primary" variant="shadow" onPress={onOpen}>

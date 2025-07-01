@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index(): Response
     {
         // Get total applications
-        $totalApplications = AppProfile::count();
+        $totalApplications = AppProfile::where('app_status', 'C')->count();
 
         $applicationsByStatus = [
             'pending' => AppProfile::whereHas('statuses', function(Builder $query) {

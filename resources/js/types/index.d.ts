@@ -27,6 +27,7 @@ export interface Application {
     payment_details: string,
     created_at?: string,
     updated_at?: string,
+    app_status: string,
     members: Member[],
     meeting: Meeting,
     documents: AppDocument[],

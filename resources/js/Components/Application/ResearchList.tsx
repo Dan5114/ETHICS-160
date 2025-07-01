@@ -93,6 +93,7 @@ const ResearchList: React.FC<ResearchListProps> = ({pagination, tableRef, handle
                     { key: 'research_title', label: 'RESEARCH TITLE' },
                     { key: 'main_researcher', label: 'RESEARCHER' },
                     { key: 'current_status', label: 'STATUS' },
+                    { key: 'app_status', label: '' },
                     { key: 'date_applied', label: 'DATE APPLIED' },
                     { key: 'protocol_code', label: 'PROTOCOL CODE' },
                     { key: 'actions', label: '' },
@@ -114,12 +115,27 @@ const ResearchList: React.FC<ResearchListProps> = ({pagination, tableRef, handle
                                 </p>
                             </TableCell>
                             <TableCell className="flex flex-col">
-                                <p className="font-semibold">
-                                    Step {application.statuses[0].sequence}: {application.statuses[0].name}
-                                </p>
-                                <Chip variant="dot" size="sm" color={statusColor(application.statuses[0].status)} className="border-none">
-                                    {application.statuses[0].status}
-                                </Chip>
+                              {application.statuses?.length > 0 ? (
+                                    <>
+                                        <p className="font-semibold">
+                                        Step {application.statuses[0].sequence}: {application.statuses[0].name}
+                                        </p>
+                                        <Chip
+                                        variant="dot"
+                                        size="sm"
+                                        color={statusColor(application.statuses[0].status)}
+                                        className="border-none"
+                                        >
+                                        {application.statuses[0].status}
+                                        </Chip>
+                                    </>
+                                    ) : (
+                                    <p className="text-blue-500 italic">---</p>
+                                )}
+
+                            </TableCell>
+                             <TableCell>
+                                {(application.app_status == 'C' ? <p className="text-green-500">Submitted</p> : <p className="text-blue-500">Draft</p>)}
                             </TableCell>
                             <TableCell>{application.date_applied}</TableCell>
                             <TableCell>

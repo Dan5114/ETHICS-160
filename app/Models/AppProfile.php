@@ -96,6 +96,7 @@ class AppProfile extends Model
         'protocol_code',
         'protocol_date',
         'is_hardcopy',
+        'app_status',
         'review_type',
         'proof_of_payment_url',
         'payment_date',

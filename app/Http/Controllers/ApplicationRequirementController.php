@@ -83,6 +83,7 @@ class ApplicationRequirementController extends Controller
      */
     public function updateStatus(Request $request, AppProfile $application): JsonResponse
     {
+
         $validated = $request->validate([
             'status_id' => 'required|string',
             'new_status' => 'required|string',
@@ -108,12 +109,19 @@ class ApplicationRequirementController extends Controller
         }
 
         $status = $application->statuses()->find($validated['status_id']);
-        $status->status = $validated['new_status'];
+        // $status->status = $validated['new_status'];
+         $status->status = "In Progress";
+         $status->name = "Application Submission";
+         $status->start = now();
+
+         $application->app_status = "C";
+         $application->save();
 
         $newStatus = NULL;
 
         if ($isCompleted && !empty($validated['next_status_name']) && empty($status->end)) {
             $status->end = now();
+             $status->status = "Completed";
 
             $newStatus = new AppStatus([
                 'name' => $validated['next_status_name'],
