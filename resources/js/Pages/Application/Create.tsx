@@ -194,10 +194,10 @@ export default function Create() {
                                 </div>
                                 <div className="col-span-2">
                                     <Textarea value={researchTitle}
-                                              onValueChange={handleSetResearchTitle}
-                                              isInvalid={errors.research_title}
-                                              isClearable
-                                              description="Max. 200 characters"
+                                        onValueChange={handleSetResearchTitle}
+                                        isInvalid={errors.research_title}
+                                        isClearable
+                                        description="Max. 200 characters"
                                     />
                                     {errors.research_title && (
                                         <div className="col-span-3">
@@ -217,18 +217,18 @@ export default function Create() {
                                 <div className="col-span-2">
                                     <div className="flex sm:flex-row flex-col gap-3">
                                         <Input label="First name"
-                                               name="firstname"
-                                               labelPlacement="outside"
-                                               value={researcher.firstname}
-                                               isInvalid={errors.researcher}
-                                               onChange={handleNameInput}
+                                            name="firstname"
+                                            labelPlacement="outside"
+                                            value={researcher.firstname}
+                                            isInvalid={errors.researcher}
+                                            onChange={handleNameInput}
                                         />
                                         <Input label="Last name"
-                                               name="lastname"
-                                               labelPlacement="outside"
-                                               value={researcher.lastname}
-                                               isInvalid={errors.researcher}
-                                               onChange={handleNameInput}
+                                            name="lastname"
+                                            labelPlacement="outside"
+                                            value={researcher.lastname}
+                                            isInvalid={errors.researcher}
+                                            onChange={handleNameInput}
                                         />
                                     </div>
                                     {errors.researcher && (
@@ -247,26 +247,26 @@ export default function Create() {
                                     <div className="">
                                         <div className="flex sm:flex-row flex-col gap-3">
                                             <Input label="First name"
-                                                   name="firstname"
-                                                   labelPlacement="outside"
-                                                   value={memberInput.firstname.value}
-                                                   isInvalid={memberInput.firstname.error}
-                                                   onChange={(e) => handleNameInput(e, true)}
+                                                name="firstname"
+                                                labelPlacement="outside"
+                                                value={memberInput.firstname.value}
+                                                isInvalid={memberInput.firstname.error}
+                                                onChange={(e) => handleNameInput(e, true)}
                                             />
                                             <Input label="Last name"
-                                                   name="lastname"
-                                                   labelPlacement="outside"
-                                                   value={memberInput.lastname.value}
-                                                   isInvalid={memberInput.lastname.error}
-                                                   onChange={(e) => handleNameInput(e, true)}
+                                                name="lastname"
+                                                labelPlacement="outside"
+                                                value={memberInput.lastname.value}
+                                                isInvalid={memberInput.lastname.error}
+                                                onChange={(e) => handleNameInput(e, true)}
                                             />
                                         </div>
                                         <Button className="mt-3"
-                                                color="success"
-                                                size="sm"
-                                                radius="full"
-                                                variant="flat"
-                                                onPress={() => handleAddMember()}
+                                            color="success"
+                                            size="sm"
+                                            radius="full"
+                                            variant="flat"
+                                            onPress={() => handleAddMember()}
                                         >
                                             Add Member
                                             <MdiAccountAdd />
@@ -303,7 +303,7 @@ export default function Create() {
                                             <input
                                                 type="file"
                                                 onChange={handleFileChange}
-                                                accept={".pdf,.doc,.docx"}
+                                                accept={".pdf,.doc,.docx,.png,.jpg,.jpeg"}
                                                 className="cursor-pointer block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                                             />
                                         </label>
@@ -353,11 +353,11 @@ export default function Create() {
                                 </div>
                                 <div className="col-span-2">
                                     <Select className="max-w-sm"
-                                            aria-labelledby="Research Type"
-                                            defaultSelectedKeys={[researchType]}
-                                            value={researchType}
-                                            onSelectionChange={(value) => setResearchType(value.currentKey!)}
-                                            disallowEmptySelection
+                                        aria-labelledby="Research Type"
+                                        defaultSelectedKeys={[researchType]}
+                                        value={researchType}
+                                        onSelectionChange={(value) => setResearchType(value.currentKey!)}
+                                        disallowEmptySelection
                                     >
                                         <SelectItem aria-labelledby="Research Type" key="internal" value="internal">Internal</SelectItem>
                                         <SelectItem aria-labelledby="Research Type" key="external" value="external">External</SelectItem>
