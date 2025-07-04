@@ -23,7 +23,7 @@ class ApplicationRequirementController extends Controller
     {
         $validated = $request->validate([
             'requirements' => 'required|array',
-            'requirements.*.*.file' => 'required|file|mimes:pdf,doc,docx|max:10240',
+            'requirements.*.*.file' => 'required|file|mimes:pdf,doc,docx,png,jpg|max:10240',
             'is_additional' => 'nullable|string',
         ]);
 
