@@ -7,7 +7,7 @@ interface DecisionLetterUploadProps {
     buttonText: string;
 }
 
-export const DecisionLetterUpload: React.FC<DecisionLetterUploadProps> = ({onUpload, buttonText}) => {
+export const DecisionLetterUpload: React.FC<DecisionLetterUploadProps> = ({ onUpload, buttonText }) => {
     const [file, setFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export const DecisionLetterUpload: React.FC<DecisionLetterUploadProps> = ({onUpl
         const selectedFile = e.target.files?.[0];
 
         if (selectedFile) {
-            const validTypes = ['.pdf', '.doc', '.docx'];
+            const validTypes = ['.pdf', '.doc', '.docx', '.png', '.jpg'];
             const fileExtension = selectedFile.name.toLowerCase().slice(selectedFile.name.lastIndexOf('.'));
 
             if (!validTypes.includes(fileExtension)) {
@@ -50,10 +50,10 @@ export const DecisionLetterUpload: React.FC<DecisionLetterUploadProps> = ({onUpl
         <div className="p-4 bg-default-100 rounded-lg">
             <Input
                 type="file"
-                accept=".pdf,.doc,.docx"
+                accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
                 onChange={handleFileChange}
                 errorMessage={error}
-                description="Accepted formats: PDF, DOC, DOCX"
+                description="Accepted formats: PDF, DOC, DOCX, PNG, JPEG, JPG"
                 className="w-full"
                 variant="bordered"
             />
