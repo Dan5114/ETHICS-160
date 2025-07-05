@@ -22,7 +22,7 @@ class DecisionLetterController extends Controller
     public function store(Request $request, AppProfile $application): JsonResponse
     {
         $data = $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg',
+            'file' => 'required|file|mimes:pdf,doc,docx',
             'message' => 'nullable|string',
             'is_signed' => 'nullable|string',
             'status_id' => 'required|string',
@@ -88,7 +88,7 @@ class DecisionLetterController extends Controller
     public function update(Request $request, AppProfile $application, DecisionLetter $decision_letter)
     {
         $data = $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg',
+            'file' => 'required|file|mimes:pdf,doc,docx',
             'message' => 'nullable|string',
             'status_id' => 'required|string',
         ]);

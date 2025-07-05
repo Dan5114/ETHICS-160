@@ -196,7 +196,7 @@ class AppProfileController extends Controller
             'lastname' => 'required|string',
             'members' => 'array',
             'documents' => 'required|array',
-            'documents.*' => 'required|file|mimes:pdf,doc,docx,png,jpeg,jpg',
+            'documents.*' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
         $appProfile = new AppProfile();
@@ -717,7 +717,7 @@ class AppProfileController extends Controller
     public function uploadEthicsClearance(Request $request, AppProfile $application): JsonResponse
     {
         $validated = $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg',
+            'file' => 'required|file|mimes:pdf,doc,docx',
             'date_clearance' => 'required|string',
             'effective_start_date' => 'required|string',
             'effective_end_date' => 'required|string',
