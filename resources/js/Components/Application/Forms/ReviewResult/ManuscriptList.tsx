@@ -13,7 +13,7 @@ interface ManuscriptListProps {
     canUpload: boolean;
 }
 
-const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, documents, onUploadRevision, canUpload }) => {
+const ManuscriptList: React.FC<ManuscriptListProps> = ({reviewResults, documents, onUploadRevision, canUpload}) => {
     const [file, setFile] = useState<File | null>(null);
     const [reviewResult, setReviewResult] = useState<AppReviewResult | null>(null);
     const [isError, setIsError] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, document
         if (!reviewResults) return [];
 
         return reviewResults.sort((a, b) => b.version - a.version)
-    }, [reviewResults]);
+    },[reviewResults]);
 
     const handleSetFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -81,14 +81,14 @@ const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, document
                         <div className="flex flex-col gap-7">
                             <div className="flex flex-col sm:flex-row sm:gap-7 gap-5 justify-between">
                                 <Select items={sortedReviewResults}
-                                    className="sm:max-w-[250px]"
-                                    placeholder="Select Review Result"
-                                    aria-labelledby="Select Review Result"
-                                    color="primary"
-                                    variant="bordered"
-                                    value={reviewResult?.id}
-                                    onSelectionChange={(id) => setReviewResult(sortedReviewResults.find(rr => rr.id === id.currentKey) ?? null)}
-                                    onClick={(e) => e.preventDefault()}
+                                        className="sm:max-w-[250px]"
+                                        placeholder="Select Review Result"
+                                        aria-labelledby="Select Review Result"
+                                        color="primary"
+                                        variant="bordered"
+                                        value={reviewResult?.id}
+                                        onSelectionChange={(id) => setReviewResult(sortedReviewResults.find(rr => rr.id === id.currentKey) ?? null)}
+                                        onClick={(e) => e.preventDefault()}
                                 >
                                     {(rr) => (
                                         <SelectItem aria-labelledby="Select Review Result" key={rr.id} value={rr.id}>
@@ -97,20 +97,20 @@ const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, document
                                     )}
                                 </Select>
                                 <InputFile file={file}
-                                    handleSelectFile={handleSetFile}
-                                    type="file"
-                                    accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
-                                    className="flex-grow"
+                                           handleSelectFile={handleSetFile}
+                                           type="file"
+                                           accept=".pdf,.doc,.docx"
+                                           className="flex-grow"
                                 />
                             </div>
                             <Button color="success"
-                                variant="flat"
-                                className="self-end"
-                                size="lg"
-                                startContent={<LightUploadRounded />}
-                                isLoading={loading}
-                                onPress={handleUpload}
-                                fullWidth
+                                    variant="flat"
+                                    className="self-end"
+                                    size="lg"
+                                    startContent={<LightUploadRounded />}
+                                    isLoading={loading}
+                                    onPress={handleUpload}
+                                    fullWidth
                             >
                                 Upload Revision
                             </Button>
@@ -122,8 +122,8 @@ const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, document
                         )}
                     </div>
                 )}
-                <Table classNames={{ base: "max-h-[320px] overflow-y-auto" }}
-                    removeWrapper
+                <Table classNames={{base: "max-h-[320px] overflow-y-auto"}}
+                       removeWrapper
                 >
                     <TableHeader>
                         <TableColumn>VERSION</TableColumn>
@@ -145,11 +145,11 @@ const ManuscriptList: React.FC<ManuscriptListProps> = ({ reviewResults, document
                                     <TableCell>
                                         {rr ? `RR ${rr.version}` : 'N/A'}
                                     </TableCell>
-                                    <TableCell className="text-wrap">
+                                    <TableCell  className="text-wrap">
                                         {formatDate(doc.created_at!)}
                                     </TableCell>
                                     <TableCell>
-                                        <Link href={route('applications.documents.download', { document: doc })} isBlock>
+                                        <Link href={route('applications.documents.download', {document: doc})} isBlock>
                                             <CloudArrowDown />
                                         </Link>
                                     </TableCell>

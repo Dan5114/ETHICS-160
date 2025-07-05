@@ -7,7 +7,7 @@ interface CreateReviewResultProps {
     onSubmit: (data: Partial<AppReviewResult>, file: File) => Promise<void>;
 }
 
-const CreateReviewResult: React.FC<CreateReviewResultProps> = ({ onSubmit }) => {
+const CreateReviewResult: React.FC<CreateReviewResultProps> = ({onSubmit}) => {
     const [name, setName] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [isError, setIsError] = useState<boolean>(false);
@@ -63,19 +63,19 @@ const CreateReviewResult: React.FC<CreateReviewResultProps> = ({ onSubmit }) => 
                             Review Name
                         </label>
                         <Input value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            id="name"
-                            required
+                               onChange={(e) => setName(e.target.value)}
+                               id="name"
+                               required
                         />
                     </div>
 
                     <InputFile label="Review Result File"
-                        type="file"
-                        accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
-                        file={file}
-                        isError={isError}
-                        handleSelectFile={handleSetFile}
-                        reverseButton
+                               type="file"
+                               accept=".pdf,.doc,.docx"
+                               file={file}
+                               isError={isError}
+                               handleSelectFile={handleSetFile}
+                               reverseButton
                     />
                 </CardBody>
                 <Divider />

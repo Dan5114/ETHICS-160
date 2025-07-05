@@ -6,7 +6,7 @@ import { DateValue, getLocalTimeZone } from "@internationalized/date";
 import { toast } from "react-toastify";
 import { RangeValue } from "@react-types/shared";
 
-const EthicsClearance: React.FC<ApplicationFormProps> = ({ user, application, status, handleUpdateApplication }) => {
+const EthicsClearance: React.FC<ApplicationFormProps> = ({user, application, status, handleUpdateApplication}) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [clearanceDate, setClearanceDate] = useState<DateValue | null>(null);
     const [dateRange, setDateRange] = useState<RangeValue<DateValue> | null>(null);
@@ -42,7 +42,7 @@ const EthicsClearance: React.FC<ApplicationFormProps> = ({ user, application, st
             formData.append('message', `Ethics Clearance has been uploaded by ${user.name}`);
 
             const response = await window.axios.post(
-                route('applications.upload-ethics-clearance', { application: application }),
+                route('applications.upload-ethics-clearance', {application: application}),
                 formData,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
@@ -103,7 +103,7 @@ const EthicsClearance: React.FC<ApplicationFormProps> = ({ user, application, st
                                         </div>
                                         <Button
                                             as={Link}
-                                            href={route('ethics-clearances.download', { ethics_clearance: application.ethics_clearance })}
+                                            href={route('ethics-clearances.download', {ethics_clearance: application.ethics_clearance})}
                                             variant="flat"
                                             color="primary"
                                             startContent={<CloudArrowDown className="w-4 h-4" />}
@@ -146,11 +146,11 @@ const EthicsClearance: React.FC<ApplicationFormProps> = ({ user, application, st
                                     </p>
                                     <Input
                                         type="file"
-                                        accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
+                                        accept=".pdf,.doc,.docx"
                                         variant="bordered"
                                         onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
                                         className="w-full"
-                                        description="Upload signed Ethics Clearance (PDF, DOC, DOCX, PNG, JPEG, JPG)"
+                                        description="Upload signed Ethics Clearance (PDF, DOC, DOCX)"
                                     />
                                 </div>
                                 <div>
