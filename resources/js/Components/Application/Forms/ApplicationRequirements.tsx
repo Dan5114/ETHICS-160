@@ -35,11 +35,22 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>, requirementName: string) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedFiles({
-                ...selectedFiles,
-                [requirementName]: selectedFiles[requirementName]
-                    ? [...selectedFiles[requirementName], ...Array.from(e.target.files)]
-                    : Array.from(e.target.files)
-            });
+        ...selectedFiles,
+        [requirementName]: (() => {
+            const existing = selectedFiles[requirementName] || [];
+            const combined = [...existing, ...Array.from(e.target.files)];
+            
+            if (requirementName === 'Other Requirements' && combined.length > 5) {
+                setAlert({
+                    message: 'You can only upload up to 5 files.',
+                    type: 'warning'
+                });
+                return combined.slice(0, 5);
+            }
+            return combined;
+        })()
+        });
+
         }
     };
 
