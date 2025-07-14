@@ -30,6 +30,13 @@ const ReviewResult = ({user, application, status, handleUpdateApplication, handl
                && hasRevisions;
     }, [hasRevisions, hasApproved, user.role]);
 
+    const unreadCount = useMemo(() => {
+            if (status?.messages) {
+                return status.messages.filter(msg => msg.read_status === 'sent').length;
+            }
+            return 0;
+        }, [status?.messages]);
+
     const handleSubmit = async (data: Partial<AppReviewResult>, file: File) => {
         const formData = new FormData();
         formData.append('name', data.name!);
@@ -152,7 +159,7 @@ const ReviewResult = ({user, application, status, handleUpdateApplication, handl
                     {label: 'Reviewer Reports', name: 'review-reports', notFor: () => status == null},
                     {label: 'Review Result', name: 'review-result'},
                     {label: 'Upload Review', name: 'upload-review', notFor: () => user.role !== 'staff' || hasApproved || status == null},
-                    {label: 'Feedbacks', name: 'feedbacks', notFor: () => status == null},
+                    {label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks', name: 'feedbacks', notFor: () => status == null},
                 ]} />
                 {currTab === 'manuscripts' && (
                     <>

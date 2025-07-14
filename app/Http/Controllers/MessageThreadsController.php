@@ -75,4 +75,14 @@ class MessageThreadsController extends Controller
             'message' => 'Message read status updated successfully',
         ]);
     }
+
+    public function getUnreadCount()
+{
+    $unreadCount = MessageThread::where('read_status', 'sent')->count();
+    
+    return response()->json([
+        'unread_count' => $unreadCount
+    ]);
+}
+    
 }

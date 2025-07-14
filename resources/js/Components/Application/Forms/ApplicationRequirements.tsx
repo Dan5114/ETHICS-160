@@ -23,6 +23,13 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
         type: 'default'
     });
 
+    const unreadCount = useMemo(() => {
+        if (status?.messages) {
+            return status.messages.filter(msg => msg.read_status === 'sent').length;
+        }
+        return 0;
+    }, [status?.messages]);
+
     const uploadedRequirements = useMemo(() => application.requirements, [application.requirements]);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>, requirementName: string) => {
@@ -159,6 +166,8 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
         });
     }
 
+
+
     return (
         <Card className="sticky self-start top-0">
             <CardHeader className="flex-col items-start bg-success-300">
@@ -169,7 +178,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
             </CardHeader>
             <NavStatus currTab={currTab} setCurrTab={setCurrTab} tabs={[
                 {name: 'submissions', label: 'Submissions'},
-                {name: 'feedbacks', label: 'Feedbacks'}
+                {name: 'feedbacks', label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks'}
             ]} />
             {currTab === 'submissions' ? (
                 <div key="submissions">

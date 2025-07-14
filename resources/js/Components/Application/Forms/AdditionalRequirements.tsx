@@ -38,6 +38,13 @@ const AdditionalRequirements = ({user, application, status, handleUpdateApplicat
         return application.requirements.filter(r => r.is_additional);
     }, [application.requirements]);
 
+    const unreadCount = useMemo(() => {
+            if (status?.messages) {
+                return status.messages.filter(msg => msg.read_status === 'sent').length;
+            }
+            return 0;
+        }, [status?.messages]);
+
     const alert: AlertType = useMemo(() => {
         if (hasApproved) {
             return {
@@ -149,9 +156,9 @@ const AdditionalRequirements = ({user, application, status, handleUpdateApplicat
             </CardHeader>
             <NavStatus currTab={currTab} setCurrTab={setCurrTab} tabs={[
                 {label: 'Requirements', name: 'requirements'},
-                {label: 'Message', name: 'message'},
+                {label: unreadCount > 0 ? `Message (${unreadCount})` : 'Message', name: 'message'},
                 {label: 'Upload Requirement', name: 'upload', notFor: () => user.role !== 'researcher' || hasApproved || status == null},
-                {label: 'Feedbacks', name: 'feedbacks', notFor: () => status == null},
+                {label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks', name: 'feedbacks', notFor: () => status == null},
             ]} />
             {currTab === 'requirements' && (
                 <>
