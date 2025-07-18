@@ -1,19 +1,22 @@
+import React, { ReactNode } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
-import { PropsWithChildren } from 'react';
 
-export default function Guest({ children }: PropsWithChildren) {
-    return (
-        <div className="flex min-h-screen flex-col items-center bg-default-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+interface GuestLayoutProps {
+  children: ReactNode;
+}
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
-            </div>
+export default function GuestLayout({ children }: GuestLayoutProps) {
+  return (
+    <div
+      className="flex min-h-screen items-center sm:justify-center sm:pt-0 bg-no-repeat bg-cover overflow-hidden"
+      style={{ backgroundImage: "url(https://aims.usls.edu.ph/lasalle/images/pwu_taft.png)" }}
+    >
+      <div className="w-full overflow-hidden card glass p-3 shadow-lg sm:max-w-md sm:rounded-lg">
+        <div className="bg-white opacity-90 rounded px-6 py-4">
+          {children}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
