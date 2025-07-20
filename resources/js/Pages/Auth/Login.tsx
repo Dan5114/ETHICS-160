@@ -89,19 +89,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
         <div className="mt-4 flex items-center justify-end">
   <PrimaryButton
-    className="
-      ms-4 w-auto 
-      bg-[#006633] hover:bg-[#005C2E] 
-      text-white 
-      focus:ring-2 focus:ring-[#005C2E] focus:ring-offset-2
-      px-4 py-2 rounded
-    "
-    disabled={processing}
+   className="inline-flex items-center ml-4 w-auto bg-[#198754] hover:bg-[#198754] focus:bg-[#198754] text-white"
+   disabled={processing}
   >
-    <span className="icon-[tabler--login]"></span>&nbsp;Log in
+     <span className="icon-[tabler--login] size-5 text-white"></span>&nbsp;Log in
   </PrimaryButton>
-
-        </div>
+</div>
 
         <div className="flex flex-col w-full lg:flex-row mt-3">
           <div className="grid flex-grow place-items-center">
