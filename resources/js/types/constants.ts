@@ -55,7 +55,8 @@ export const applicationRequirements = [
     { name: "Recruitment Ad/s", description: 'Upload if any' },
     { name: 'Approval/Consent', description: 'For the use of standardized test/tools' },
     { name: 'Certificate of Translation', description: 'For foreign-based students' },
-    { name: 'Contact Details of Organization/People', description: 'The RERC will communicate with for site visits/checking' }
+    { name: 'Contact Details of Organization/People', description: 'The RERC will communicate with for site visits/checking' },
+    { name: 'Other Requirements', description: 'Can upload 5 attachments at max' }
 ]
 
 export const STEPS = [

@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->dateTime('protocol_date_updated')->nullable();
 
             $table->string('review_type')->nullable();
-            $table->string('status')->default("D");
+            $table->string('app_status')->default("D");
 
             $table->text('proof_of_payment_url')->nullable();
             $table->dateTime('payment_date')->nullable();

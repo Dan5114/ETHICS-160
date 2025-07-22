@@ -23,16 +23,34 @@ const ApplicationRequirements = ({ user, application, status, handleUpdateApplic
         type: 'default'
     });
 
+    const unreadCount = useMemo(() => {
+        if (status?.messages) {
+            return status.messages.filter(msg => msg.read_status === 'sent').length;
+        }
+        return 0;
+    }, [status?.messages]);
+
     const uploadedRequirements = useMemo(() => application.requirements, [application.requirements]);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>, requirementName: string) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedFiles({
                 ...selectedFiles,
-                [requirementName]: selectedFiles[requirementName]
-                    ? [...selectedFiles[requirementName], ...Array.from(e.target.files)]
-                    : Array.from(e.target.files)
+                [requirementName]: (() => {
+                    const existing = selectedFiles[requirementName] || [];
+                    const combined = [...existing, ...Array.from(e.target.files)];
+
+                    if (requirementName === 'Other Requirements' && combined.length > 5) {
+                        setAlert({
+                            message: 'You can only upload up to 5 files.',
+                            type: 'warning'
+                        });
+                        return combined.slice(0, 5);
+                    }
+                    return combined;
+                })()
             });
+
         }
     };
 
@@ -159,6 +177,8 @@ const ApplicationRequirements = ({ user, application, status, handleUpdateApplic
         });
     }
 
+
+
     return (
         <Card className="sticky self-start top-0">
             <CardHeader className="flex-col items-start bg-success-300">
@@ -169,7 +189,7 @@ const ApplicationRequirements = ({ user, application, status, handleUpdateApplic
             </CardHeader>
             <NavStatus currTab={currTab} setCurrTab={setCurrTab} tabs={[
                 { name: 'submissions', label: 'Submissions' },
-                { name: 'feedbacks', label: 'Feedbacks' }
+                { name: 'feedbacks', label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks' }
             ]} />
             {currTab === 'submissions' ? (
                 <div key="submissions">

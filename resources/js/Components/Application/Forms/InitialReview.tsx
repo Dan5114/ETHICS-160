@@ -34,6 +34,13 @@ const InitialReview = ({user, application, status, handleUpdateApplication, hand
         {key: 4, label: 'ACTION'},
     ]
 
+    const unreadCount = useMemo(() => {
+        if (status?.messages) {
+            return status.messages.filter(msg => msg.read_status === 'sent').length;
+        }
+        return 0;
+    }, [status?.messages]);
+
     const [currTab, setCurrTab] = React.useState('files');
     const [loading, setLoading] = React.useState(false);
 
@@ -87,7 +94,7 @@ const InitialReview = ({user, application, status, handleUpdateApplication, hand
             </CardHeader>
             <NavStatus currTab={currTab} setCurrTab={setCurrTab} tabs={[
                 {name: 'files', label: 'Files'},
-                {name: 'feedbacks', label: 'Feedbacks', notFor: () => status == null}
+                {name: 'feedbacks', label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks', notFor: () => status == null}
             ]} />
             {currTab === 'files' ? (
                 <>
