@@ -97,6 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reviewer-report/{reviewer_report}/download', fn(ReviewerReport $reviewer_report) =>
         Storage::disk('public')->download($reviewer_report->file_url)
     )->name('reviewer-report.download');
+    
 });
 
 require __DIR__ . '/auth.php';

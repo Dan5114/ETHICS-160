@@ -1,187 +1,122 @@
+// resources/js/Layouts/AuthenticatedLayout.tsx
+
+import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import { Link, usePage } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
-import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { Slide, ToastContainer } from "react-toastify";
-import { ThemeSwitcher } from "@/Components/ThemeSwitcher";
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { Slide, ToastContainer } from 'react-toastify';
+import { ThemeSwitcher } from '@/Components/ThemeSwitcher';
 
 export default function Authenticated({
-    header,
-    children,
+  header,
+  children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const user = usePage().props.auth.user;
+  const user = usePage().props.auth.user;
+  const [showNav, setShowNav] = useState(false);
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+  return (
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        limit={2}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Slide}
+      />
 
-    return (
-        <>
-            <ToastContainer
-                position="top-center"
-                autoClose={4000}
-                limit={2}
-                hideProgressBar
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-                transition={Slide}
-            />
-            <div className="min-h-screen">
-                <nav className="border-b ">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-16 justify-between">
-                            <div className="flex">
-                                <div className="flex shrink-0 items-center">
-                                    <Link href="/">
-                                        <ApplicationLogo className="block h-9 w-auto fill-current" />
-                                    </Link>
-                                </div>
+      <div className="min-h-screen bg-gradient-to-b from-[#00582A] to-[#B6D8B9] font-sans">
+        <nav className="bg-[#00582A]">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 justify-between items-center">
+              <div className="flex items-center">
+                <Link href="/">
+                  <ApplicationLogo className="h-10 w-auto" />
+                </Link>
+                <div className="hidden space-x-8 sm:ml-10 sm:flex">
+                  <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                    Dashboard
+                  </NavLink>
+                  <NavLink href={route('applications.index')} active={route().current('applications.index')}>
+                    Applications
+                  </NavLink>
+                </div>
+              </div>
 
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink
-                                        href={route('dashboard')}
-                                        active={route().current('dashboard')}
-                                    >
-                                        Dashboard
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('applications.index')}
-                                        active={route().current('applications.index')}
-                                    >
-                                        Applications
-                                    </NavLink>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <ThemeSwitcher />
-                                <div className="hidden sm:flex sm:items-center">
-                                    <div className="relative ms-3">
-                                        <Dropdown>
-                                            <DropdownTrigger>
-                                                <Button variant="light">{user.name}</Button>
-                                            </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions">
-                                                <DropdownItem key="profile">
-                                                    <a href={route('profile.edit')} className="block">Profile</a>
-                                                </DropdownItem>
-                                                <DropdownItem key="logout">
-                                                    <Link method="post" href={route('logout')} className="w-full text-start">
-                                                        Logout
-                                                    </Link>
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="-me-2 flex items-center sm:hidden">
-                                <button
-                                    onClick={() =>
-                                        setShowingNavigationDropdown(
-                                            (previousState) => !previousState,
-                                        )
-                                    }
-                                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
-                                >
-                                    <svg
-                                        className="h-6 w-6"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            className={
-                                                !showingNavigationDropdown
-                                                    ? 'inline-flex'
-                                                    : 'hidden'
-                                            }
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                        <path
-                                            className={
-                                                showingNavigationDropdown
-                                                    ? 'inline-flex'
-                                                    : 'hidden'
-                                            }
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }>
-                        <div className="space-y-1 pb-3 pt-2">
-                            <ResponsiveNavLink
-                                href={route('dashboard')}
-                                active={route().current('dashboard')}
-                            >
-                                Dashboard
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                href={route('applications.index')}
-                                active={route().current('applications.index')}
-                            >
-                                Applications
-                            </ResponsiveNavLink>
-                        </div>
-
-                        <div className="border-t border-gray-200 pb-1 pt-4">
-                            <div className="px-4">
-                                <div className="text-base font-medium text-gray-800">
-                                    {user.name}
-                                </div>
-                                <div className="text-sm font-medium text-gray-500">
-                                    {user.email}
-                                </div>
-                            </div>
-
-                            <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('profile.edit')}>
-                                    Profile
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    method="post"
-                                    href={route('logout')}
-                                    as="button"
-                                >
-                                    Log Out
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                {header && (
-                    <header className="shadow">
-                        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                            {header}
-                        </div>
-                        <Divider className="bg-gray-200/20" />
-                    </header>
-                )}
-
-                <main className="mx-auto max-w-screen-xl sm:px-6 lg:px-8">
-                    {children}
-                </main>
+              <div className="flex items-center space-x-4">
+                <ThemeSwitcher />
+                <div className="hidden sm:flex sm:items-center">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button variant="light">{user.name}</Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem>
+                        <Link href={route('profile.edit')} className="block">Profile</Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link method="post" href={route('logout')} className="block text-start">
+                          Logout
+                        </Link>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+                <button
+                  onClick={() => setShowNav(prev => !prev)}
+                  className="sm:hidden p-2 rounded-md text-white hover:bg-white/20 focus:outline-none"
+                >
+                  {showNav
+                    ? <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    : <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                  }
+                </button>
+              </div>
             </div>
-        </>
-    );
+          </div>
+
+          {showNav && (
+            <div className="sm:hidden bg-[#00582A]">
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                  Dashboard
+                </ResponsiveNavLink>
+                <ResponsiveNavLink href={route('applications.index')} active={route().current('applications.index')}>
+                  Applications
+                </ResponsiveNavLink>
+                <ResponsiveNavLink href={route('profile.edit')}>
+                  Profile
+                </ResponsiveNavLink>
+                <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                  Logout
+                </ResponsiveNavLink>
+              </div>
+            </div>
+          )}
+        </nav>
+
+        {header && (
+          <header className="border-b border-white/20">
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+              <h1 className="font-custom text-2xl text-white">{header}</h1>
+            </div>
+          </header>
+        )}
+
+        <main className="mx-auto max-w-screen-xl sm:px-6 lg:px-8 mt-8">
+          <div className="backdrop-blur-sm bg-white/60 rounded-lg p-6 shadow-lg">
+            {children}
+          </div>
+        </main>
+      </div>
+    </>
+  );
 }
