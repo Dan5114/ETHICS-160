@@ -13,7 +13,7 @@ interface AlertType {
     type: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
 }
 
-const ApplicationRequirements = ({user, application, status, handleUpdateApplication, handleMessage}: ApplicationFormProps) => {
+const ApplicationRequirements = ({ user, application, status, handleUpdateApplication, handleMessage }: ApplicationFormProps) => {
     const [currTab, setCurrTab] = useState<string>('submissions');
     const [selectedFiles, setSelectedFiles] = useState<{ [key: string]: File[] }>({});
 
@@ -35,21 +35,21 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>, requirementName: string) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedFiles({
-        ...selectedFiles,
-        [requirementName]: (() => {
-            const existing = selectedFiles[requirementName] || [];
-            const combined = [...existing, ...Array.from(e.target.files)];
-            
-            if (requirementName === 'Other Requirements' && combined.length > 5) {
-                setAlert({
-                    message: 'You can only upload up to 5 files.',
-                    type: 'warning'
-                });
-                return combined.slice(0, 5);
-            }
-            return combined;
-        })()
-        });
+                ...selectedFiles,
+                [requirementName]: (() => {
+                    const existing = selectedFiles[requirementName] || [];
+                    const combined = [...existing, ...Array.from(e.target.files)];
+
+                    if (requirementName === 'Other Requirements' && combined.length > 5) {
+                        setAlert({
+                            message: 'You can only upload up to 5 files.',
+                            type: 'warning'
+                        });
+                        return combined.slice(0, 5);
+                    }
+                    return combined;
+                })()
+            });
 
         }
     };
@@ -90,8 +90,8 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
             });
         });
 
-        window.axios.post(route('applications.requirements.store', {application: application}), formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
+        window.axios.post(route('applications.requirements.store', { application: application }), formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         }).then((response) => {
             handleUpdateApplication({
                 application: {
@@ -117,7 +117,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
 
         const newStatus = "Waiting for Approval";
 
-        window.axios.patch(route('applications.requirements.update-statuses', {application: application}), {
+        window.axios.patch(route('applications.requirements.update-statuses', { application: application }), {
             requirement_ids: uploadedRequirements.map((req) => req.id),
             requirement_status: 'Submitted',
             status_id: status.id,
@@ -142,7 +142,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
     const handleApprove = () => {
         setLoading(true);
 
-        window.axios.patch(route('applications.requirements.update-statuses', {application: application}), {
+        window.axios.patch(route('applications.requirements.update-statuses', { application: application }), {
             requirement_ids: uploadedRequirements.map((req) => req.id),
             requirement_status: 'Approved',
             status_id: status.id,
@@ -166,7 +166,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
     }
 
     const handleDeleteRequirement = (r: Requirement) => {
-        window.axios.delete(route('requirements.destroy', {requirement: r})).then((_) => {
+        window.axios.delete(route('requirements.destroy', { requirement: r })).then((_) => {
             toast.success(`${r.file_url.split('\\').pop()?.split('/').pop()} deleted successfully`);
 
             handleUpdateApplication({
@@ -188,8 +188,8 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
                 </p>
             </CardHeader>
             <NavStatus currTab={currTab} setCurrTab={setCurrTab} tabs={[
-                {name: 'submissions', label: 'Submissions'},
-                {name: 'feedbacks', label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks'}
+                { name: 'submissions', label: 'Submissions' },
+                { name: 'feedbacks', label: unreadCount > 0 ? `Feedbacks (${unreadCount})` : 'Feedbacks' }
             ]} />
             {currTab === 'submissions' ? (
                 <div key="submissions">
@@ -219,6 +219,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
                                                     </div>
                                                     <input
                                                         type="file"
+                                                        accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
                                                         name={requirement.name}
                                                         onChange={(e) => handleFileChange(e, requirement.name)}
                                                         className="hidden"
@@ -234,14 +235,14 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
                                                             <h5 className="text-sm">Selected files:</h5>
                                                             {selectedFiles[requirement.name].map((file, index) => (
                                                                 <div key={file.name} className="inline-flex flex-nowrap items-center justify-between w-full">
-                                                                <span className="text-sm text-nowrap text-ellipsis truncate">
-                                                                    {file.name}
-                                                                </span>
+                                                                    <span className="text-sm text-nowrap text-ellipsis truncate">
+                                                                        {file.name}
+                                                                    </span>
                                                                     <Button onPress={() => removeSelectedFile(requirement.name, index)}
-                                                                            size="sm"
-                                                                            variant="light"
-                                                                            color="danger"
-                                                                            isIconOnly
+                                                                        size="sm"
+                                                                        variant="light"
+                                                                        color="danger"
+                                                                        isIconOnly
                                                                     >
                                                                         <MdiDeleteForever />
                                                                     </Button>
@@ -257,7 +258,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
                                                     <div className="flex flex-col">
                                                         <Link
                                                             className="inline-flex w-full cursor-pointer p-1"
-                                                            href={route('applications.requirements.download', {application: application, requirement: u})}
+                                                            href={route('applications.requirements.download', { application: application, requirement: u })}
                                                             color="foreground"
                                                             underline="always"
                                                         >
@@ -297,13 +298,13 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
                         })}
                     </CardBody>
                     <Footer user={user}
-                            status={status}
-                            requirements={uploadedRequirements}
-                            alert={alert}
-                            loading={loading}
-                            handleUpload={handleUpload}
-                            handleSubmit={handleSubmit}
-                            handleApprove={handleApprove}
+                        status={status}
+                        requirements={uploadedRequirements}
+                        alert={alert}
+                        loading={loading}
+                        handleUpload={handleUpload}
+                        handleSubmit={handleSubmit}
+                        handleApprove={handleApprove}
                     />
                 </div>
             ) : (
@@ -313,7 +314,7 @@ const ApplicationRequirements = ({user, application, status, handleUpdateApplica
     )
 }
 
-const Footer = ({user, status, requirements, alert, loading, handleUpload, handleSubmit, handleApprove}: {
+const Footer = ({ user, status, requirements, alert, loading, handleUpload, handleSubmit, handleApprove }: {
     user: User,
     status: AppStatus,
     requirements: Requirement[],

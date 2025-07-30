@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { getLocalTimeZone } from "@internationalized/date";
 import { ClipboardError } from "@/Components/Icons";
 
-const PaymentMade = ({user, application, status, handleUpdateApplication}: ApplicationFormProps) => {
+const PaymentMade = ({ user, application, status, handleUpdateApplication }: ApplicationFormProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [details, setDetails] = useState("");
     const [isError, setIsError] = useState(false);
@@ -66,8 +66,8 @@ const PaymentMade = ({user, application, status, handleUpdateApplication}: Appli
         formData.append("payment_details", details);
         formData.append("message", `${application.research_title}'s payment receipt uploaded.`);
 
-        window.axios.post(route('applications.upload-payment', {application: application}), formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
+        window.axios.post(route('applications.upload-payment', { application: application }), formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         }).then(response => {
             handleUpdateApplication({
                 application: {
@@ -86,14 +86,14 @@ const PaymentMade = ({user, application, status, handleUpdateApplication}: Appli
     const handleConfirmPayment = (canConfirm: boolean) => {
         setLoading(true);
 
-        window.axios.post(route('applications.confirm-payment', {application: application}), {
+        window.axios.post(route('applications.confirm-payment', { application: application }), {
             can_confirm: canConfirm,
             name: user.name
         }).then((r) => {
             const confirmStatus = canConfirm ? "Confirmed" : "Rejected";
 
             toast.success(`Payment status successfully set to ${confirmStatus}.`);
-            handleUpdateApplication({application: {statuses: r.data.statuses}});
+            handleUpdateApplication({ application: { statuses: r.data.statuses } });
         }).catch((error) => {
             toast.error("Failed to confirm payment. Please try again.");
             console.error(error);
@@ -122,7 +122,7 @@ const PaymentMade = ({user, application, status, handleUpdateApplication}: Appli
                                         showAnchorIcon
                                         underline="hover"
                                         color="primary"
-                                        href={route('applications.payment-download', {application: application})}
+                                        href={route('applications.payment-download', { application: application })}
                                         className="px-0 py-2"
                                         style={{ overflowWrap: 'anywhere' }}
                                     >
@@ -224,7 +224,7 @@ const InputPayment: React.FC<{
             <InputFile
                 label="Upload Payment Receipt"
                 type="file"
-                accept="image/*"
+                accept=".png,.docx,.doc,.pdf,.jpg,.jpeg"
                 file={file}
                 handleSelectFile={handleSelectFile}
                 isError={isError}

@@ -89,37 +89,37 @@ const Index = (props: ApplicationIndexProps) => {
                                     )}
                                     {props.auth.user.role !== 'researcher' && (
                                         <Button color="primary"
-                                                variant="flat"
-                                                startContent={<IconFileTypeExcel className="w-6 h-6" />}
-                                                onPress={onDownload}
+                                            variant="flat"
+                                            startContent={<IconFileTypeExcel className="w-6 h-6" />}
+                                            onPress={onDownload}
                                         >
                                             Export to Excel
                                         </Button>
                                     )}
                                 </div>
                                 <Input placeholder="Search by research title or researcher..."
-                                       endContent={(
-                                           <Button onPress={() => {
-                                               if (search !== filters.query) {
-                                                   updateFilters({...filters, query: search}, pagination.current_page);
-                                               }
-                                           }}
-                                                   variant="light"
-                                                   color="primary"
-                                                   isIconOnly
-                                           >
-                                               <MdiSearch />
-                                           </Button>
-                                       )}
-                                       className="max-w-md disabled:pointer-events-auto"
-                                       variant="flat"
-                                       value={search}
-                                       onChange={(e) => setSearch(e.target.value)}
-                                       onKeyDown={(e) =>
-                                           e.key === 'Enter'
-                                           && search !== filters.query
-                                           && updateFilters({...filters, query: search}, pagination.current_page)
-                                       }
+                                    endContent={(
+                                        <Button onPress={() => {
+                                            if (search !== filters.query) {
+                                                updateFilters({ ...filters, query: search }, pagination.current_page);
+                                            }
+                                        }}
+                                            variant="light"
+                                            color="primary"
+                                            isIconOnly
+                                        >
+                                            <MdiSearch />
+                                        </Button>
+                                    )}
+                                    className="max-w-md disabled:pointer-events-auto"
+                                    variant="flat"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    onKeyDown={(e) =>
+                                        e.key === 'Enter'
+                                        && search !== filters.query
+                                        && updateFilters({ ...filters, query: search }, pagination.current_page)
+                                    }
                                 />
                                 <div className="flex flex-wrap gap-4 w-full">
                                     {/* Up to Step */}
@@ -188,11 +188,11 @@ const Index = (props: ApplicationIndexProps) => {
                             </CardHeader>
                             <CardBody>
                                 <ResearchList pagination={pagination}
-                                              tableRef={tableRef}
-                                              handleDelete={handleDelete}
-                                              handleSetPage={handleSetPage}
-                                              loading={loading}
-                                              canDelete={props.canDelete}
+                                    tableRef={tableRef}
+                                    handleDelete={handleDelete}
+                                    handleSetPage={handleSetPage}
+                                    loading={loading}
+                                    canDelete={props.canDelete}
                                 />
                             </CardBody>
                         </Card>
