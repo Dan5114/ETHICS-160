@@ -29,24 +29,30 @@ export default function DeleteUserForm({ className = '' }: Props) {
   };
 
   return (
-    <section className={`space-y-6 ${className}`}>
+    <section className="space-y-6">
       <header>
-        <h2 className="text-lg font-medium text-base-content">Delete Account</h2>
-        <p className="mt-1 text-sm text-base-content/80">
-          Once your account is deleted, all of its resources and data will be permanently deleted.
+        <h2 className="text-lg font-bold text-gray-900">Delete Account</h2>
+
+        <p className="mt-1 text-sm text-gray-600">
+          Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
         </p>
       </header>
 
-      <DangerButton onClick={() => onOpenChange(true)}>Delete Account</DangerButton>
+      <button
+        className="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150"
+        onClick={() => onOpenChange()}
+      >
+        Delete Account
+      </button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <form onSubmit={deleteUser} className="p-6">
-              <h2 className="text-lg font-medium text-base-content">
+              <h2 className="text-lg font-medium text-gray-900">
                 Are you sure you want to delete your account?
               </h2>
-              <p className="mt-1 text-sm text-base-content/80">
+              <p className="mt-1 text-sm text-gray-600">
                 Please enter your password to confirm you would like to permanently delete your account.
               </p>
 
@@ -59,7 +65,7 @@ export default function DeleteUserForm({ className = '' }: Props) {
                   ref={passwordRef}
                   value={data.password}
                   onChange={(e) => setData('password', e.target.value)}
-                  className="mt-1 block w-3/4"
+                  className="mt-1 block w-3/4 rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
                   placeholder="Password"
                   isFocused
                 />

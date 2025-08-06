@@ -1,43 +1,52 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
-import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import React from 'react'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import { Head, usePage } from '@inertiajs/react'
 
-export default function Edit({
-    mustVerifyEmail,
-    status,
-}: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
-    return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm'
+import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm'
+import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm'
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+export default function Edit() {
+  const { auth, mustVerifyEmail, status } = usePage().props as any
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+  return (
+    <AuthenticatedLayout header="Profile" user={auth.user}>
+      <Head title="Profile" />
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                </div>
+      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        {/* Side by side layout: Profile Information on left, Update Password on right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+          {/* Left column - Profile Information */}
+          <div className="min-w-0">
+            <div className="bg-white shadow sm:rounded-lg h-full">
+              <div className="p-8">
+                <UpdateProfileInformationForm
+                  mustVerifyEmail={mustVerifyEmail}
+                  status={status}
+                />
+              </div>
             </div>
-        </AuthenticatedLayout>
-    );
+          </div>
+
+          {/* Right column - Update Password */}
+          <div className="min-w-0">
+            <div className="bg-white shadow sm:rounded-lg h-full">
+              <div className="p-8">
+                <UpdatePasswordForm />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Delete Account section below */}
+        <div className="mt-6">
+          <div className="bg-white shadow sm:rounded-lg">
+            <div className="p-8">
+              <DeleteUserForm />
+            </div>
+          </div>
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  )
 }

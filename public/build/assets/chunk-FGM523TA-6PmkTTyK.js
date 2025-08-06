@@ -1,0 +1,1 @@
+import{r as t}from"./app-BJT_Cns_.js";var o=(l,a)=>{var n;let e=[];const i=(n=t.Children.map(l,r=>t.isValidElement(r)&&r.type===a?(e.push(r),null):r))==null?void 0:n.filter(Boolean),u=e.length>=0?e:void 0;return[i,u]};export{o as p};
