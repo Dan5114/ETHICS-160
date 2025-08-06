@@ -39,66 +39,82 @@ export default function UpdateProfileInformationForm({
   }, [showMessage]);
 
   return (
-    <div className={`backdrop-blur-sm bg-white/60 rounded-md p-6 shadow-lg ${className}`}>
-      <section>
-        <header>
-          <h2 className="text-lg font-medium text-base-content">Profile Information</h2>
-          <p className="mt-1 text-sm text-base-content/80">
-            Update your account’s profile information and email address.
-          </p>
-        </header>
+    <section>
+      <header>
+        <h2 className="text-lg font-bold text-gray-900">Profile Information</h2>
+        <p className="mt-1 text-sm text-gray-600">
+          Update your account's profile information and email address.
+        </p>
+      </header>
 
-        <form onSubmit={submit} className="mt-6 space-y-6">
-          <div>
-            <InputLabel htmlFor="name" value="Name" />
-            <TextInput
-  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-[#00582A] focus:border-[#00582A]"
-/>
+      <form onSubmit={submit} className="mt-4 space-y-4">
+        <div>
+          <InputLabel htmlFor="name" value="Name" className="text-sm font-medium text-gray-700" />
+          <TextInput
+            id="name"
+            type="text"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#00572A] focus:ring-[#00572A] sm:text-sm"
+            value={data.name}
+            onChange={(e) => setData('name', e.target.value)}
+            required
+            autoFocus
+          />
+          <InputError className="mt-2" message={errors.name} />
+        </div>
 
-            <InputError className="mt-2" message={errors.name} />
+        <div>
+          <InputLabel htmlFor="email" value="Email" className="text-sm font-medium text-gray-700" />
+          <TextInput
+            id="email"
+            type="email"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#00572A] focus:ring-[#00572A] sm:text-sm"
+            value={data.email}
+            onChange={(e) => setData('email', e.target.value)}
+            required
+            autoComplete="username"
+          />
+          <InputError className="mt-2" message={errors.email} />
+        </div>
+
+        {/* Invisible field to match Update Password form structure */}
+        <div>
+          <InputLabel htmlFor="invisible_field" value=" " className="text-sm font-medium text-gray-700 opacity-0" />
+          <div className="mt-1 block w-full opacity-0" style={{ height: '3.8rem' }}></div>
+        </div>
+
+        <div className="flex items-center gap-4 mt-4">
+          <button 
+            type="submit"
+            disabled={processing}
+            className="bg-[#00572A] hover:bg-[#004c24] text-white px-2 py-1 rounded-md text-sm font-medium transition-colors h-10 w-20 flex items-center justify-center"
+          >
+            SAVE
+          </button>
+          {showMessage && <p className="text-sm text-green-600">Saved.</p>}
+        </div>
+
+        {/* Email verification section moved after button */}
+        {mustVerifyEmail && user.email_verified_at === null && (
+          <div className="mt-4">
+            <p className="text-sm text-gray-600">
+              Your email address is unverified.{' '}
+              <Link
+                href={route('verification.send')}
+                method="post"
+                as="button"
+                className="ml-1 text-sm text-[#00572A] underline hover:text-[#004c24] focus:outline-none focus:ring-2 focus:ring-[#00572A]"
+              >
+                Click here to re-send the verification email.
+              </Link>
+            </p>
+            {status === 'verification-link-sent' && (
+              <div className="mt-2 text-sm font-medium text-green-600">
+                A new verification link has been sent to your email address.
+              </div>
+            )}
           </div>
-
-          <div>
-            <InputLabel htmlFor="email" value="Email" />
-            <TextInput
-              id="email"
-              type="email"
-              className="mt-1 block w-full"
-              value={data.email}
-              onChange={(e) => setData('email', e.target.value)}
-              required
-              autoComplete="username"
-            />
-            <InputError className="mt-2" message={errors.email} />
-          </div>
-
-          {mustVerifyEmail && user.email_verified_at === null && (
-            <div>
-              <p className="mt-2 text-sm text-base-content">
-                Your email address is unverified.{' '}
-                <Link
-                  href={route('verification.send')}
-                  method="post"
-                  as="button"
-                  className="ml-1 text-sm text-primary underline hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  Click here to re-send the verification email.
-                </Link>
-              </p>
-              {status === 'verification-link-sent' && (
-                <div className="mt-2 text-sm font-medium text-success">
-                  A new verification link has been sent to your email address.
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="flex items-center gap-4">
-            <PrimaryButton className="bg-[#00582A] hover:bg-[#004c24] text-white transition" />
-            {showMessage && <p className="text-sm text-success">Saved.</p>}
-          </div>
-        </form>
-      </section>
-    </div>
+        )}
+      </form>
+    </section>
   );
 }

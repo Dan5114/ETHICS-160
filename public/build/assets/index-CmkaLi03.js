@@ -1,0 +1,1 @@
+import{r as a}from"./app-BJT_Cns_.js";import{u as f}from"./index-DWOFtsnP.js";function s(e,t=[]){const r=a.useRef(e);return f(()=>{r.current=e}),a.useCallback((...c)=>{var u;return(u=r.current)==null?void 0:u.call(r,...c)},t)}export{s as u};
